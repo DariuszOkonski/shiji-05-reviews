@@ -11,15 +11,39 @@ const App = () => {
   const [index, setIndex] = useState(0);
   const { id, image, job, name, text } = people[index];
 
-  const nextPerson = () => {
-    if (index < people.length - 1) {
-      setIndex((currentIndex) => currentIndex + 1);
+  const checkNumber = (number) => {
+    if (number > people.length - 1) {
+      return 0;
     }
+
+    if (number < 0) {
+      return people.length - 1;
+    }
+
+    return number;
+  };
+
+  const nextPerson = () => {
+    setIndex((currentIndex) => {
+      const newIndex = currentIndex + 1;
+      return checkNumber(newIndex);
+    });
   };
   const prevPerson = () => {
-    if (index > 0) {
-      setIndex((currentIndex) => currentIndex - 1);
+    setIndex((currentIndex) => {
+      const newIndex = currentIndex - 1;
+      return checkNumber(newIndex);
+    });
+  };
+
+  const randomPerson = () => {
+    let randomNumber = Math.floor(Math.random() * people.length);
+    setIndex(randomNumber);
+    if (randomNumber === index) {
+      randomNumber = index + 1;
     }
+
+    setIndex(checkNumber(randomNumber));
   };
 
   return (
@@ -44,6 +68,10 @@ const App = () => {
             <FaChevronCircleRight />
           </button>
         </div>
+
+        <button className='btn btn-hipster' onClick={randomPerson}>
+          surprise me
+        </button>
       </article>
     </main>
   );
